@@ -1,0 +1,83 @@
+/* Video Button Styles */
+.video-control-container {
+    display: flex;
+    align-items: center;
+    background: #3c4043;
+    border-radius: 24px;
+    padding: 4px;
+    margin: 0 8px;
+  }
+  
+  .video-button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: #3c4043;
+    color: white;
+    transition: all 0.2s ease;
+  }
+  
+  .video-button.enabled {
+    background: #3c4043;
+  }
+  
+  .video-button.disabled {
+    background: #ea4335; /* Red when video is off */
+  }
+  
+  .video-button:hover {
+    background: #4e5255;
+  }
+  
+  .video-button.disabled:hover {
+    background: #d33426;
+  }
+  
+  .video-settings-button {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: transparent;
+    color: white;
+    margin-left: 4px;
+    transition: background 0.2s ease;
+  }
+  
+  .video-settings-button:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+  
+  /* Settings dropdown (optional) */
+  .video-settings-dropdown {
+    position: absolute;
+    bottom: 60px;
+    right: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    padding: 12px;
+    width: 200px;
+    z-index: 100;
+  }
+  
+  /* Mobile responsive styles */
+  @media (max-width: 768px) {
+    .video-control-container {
+      margin: 0 4px;
+    }
+    
+    .video-button {
+      width: 36px;
+      height: 36px;
+    }
+  }

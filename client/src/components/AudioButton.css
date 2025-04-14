@@ -1,0 +1,25 @@
+.audio-button {
+    background: #3c4043;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    color: white;
+}
+
+.audio-button.enabled {
+    background: #3c4043;
+}
+
+.audio-button.disabled {
+    background: #ea4335;
+}
+
+.audio-button:hover {
+    background-color: #5f6368;
+}

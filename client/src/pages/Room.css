@@ -1,0 +1,374 @@
+/* Google Meet exact styling */
+.meet-container {
+  --google-blue: #4285F4;
+  --google-green: #34A853;
+  --google-yellow: #FBBC05;
+  --google-red: #EA4335;
+  --google-gray: #5F6368;
+  --google-light-gray: #E8EAED;
+  --google-dark-gray: #3C4043;
+  --google-black: #202124;
+  
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  background-color: var(--google-black);
+  color: white;
+  font-family: 'Google Sans', Roboto, Arial, sans-serif;
+  position: relative;
+  overflow: hidden;
+
+}
+
+/* Main content area */
+.meet-content {
+  flex: 1;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+
+}
+
+/* Screen sharing layout */
+.screenshare-active .participants-container {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  width: 20%;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 10;
+ 
+
+}
+
+.screenshare-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  aspect-ratio: 16/9;
+
+}
+
+.screenshare-container video {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+  aspect-ratio: 16/9;
+
+}
+
+/* Participants container */
+.participants-container {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px;
+  overflow-y: auto;
+  aspect-ratio: 16/9;
+
+}
+
+/* Layout variations */
+/* Update the few-participants layout */
+.few-participants .participants-container {
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.few-participants .participant-tile {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  
+}
+
+.few-participants .participants-container {
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.few-participants .participant-tile {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+/* Current user tile positioning - fixed minimum size */
+.few-participants .participant-tile.current-user {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  width: 25%;
+  min-width: 160px; /* Added minimum width */
+  max-width: 300px;
+  height: auto;
+  aspect-ratio: 16/9;
+  z-index: 2;
+  border: 2px solid white;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+}
+
+.medium-participants .participants-container {
+  justify-content: center;
+}
+
+.medium-participants .participant-tile {
+  width: 45%;
+  height: 45%;
+  max-width: 50%;
+  
+}
+
+.many-participants .participant-tile {
+  width: 30%;
+  height: 30%;
+  max-width: 33%;
+}
+
+/* Participant tile styling */
+.participant-tile {
+  background: var(--google-dark-gray);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+  transition: all 0.2s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.participant-tile.active-speaker {
+  box-shadow: 0 0 0 2px var(--google-blue);
+}
+
+/* Controls bar - exact Google Meet styling */
+.meet-controls-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px;
+  background-color: var(--google-dark-gray);
+  height: 64px;
+  box-sizing: border-box;
+  z-index: 100;
+}
+
+.meeting-time-display {
+  color: var(--google-light-gray);
+  font-size: 14px;
+  font-weight: 500;
+  min-width: 80px;
+}
+
+.center-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.control-divider {
+  width: 1px;
+  height: 32px;
+  background-color: var(--google-gray);
+  margin: 0 8px;
+}
+
+.control-button {
+  background: transparent;
+  border: none;
+  color: var(--google-light-gray);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  min-width: 72px;
+  transition: background-color 0.2s;
+}
+
+.control-button:hover {
+  background-color: var(--google-gray);
+}
+
+.control-button .icon {
+  font-size: 20px;
+  margin-bottom: 4px;
+}
+
+.meet-control {
+  background-color: var(--google-gray);
+  color: white;
+}
+
+.settings-control {
+  min-width: 40px;
+  background-color: var(--google-gray);
+}
+
+/* Chat panel styling */
+.meet-chat-panel {
+  position: absolute;
+  right: 0;
+  bottom: 64px;
+  width: 320px;
+  height: calc(100% - 64px);
+  background-color: white;
+  color: var(--google-black);
+  box-shadow: -2px 0 8px rgba(0,0,0,0.2);
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Active speaker highlight */
+@keyframes active-speaker-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(66, 133, 244, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(66, 133, 244, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(66, 133, 244, 0); }
+}
+
+.active-speaker {
+  animation: active-speaker-pulse 2s infinite;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .few-participants .participant-tile.current-user {
+    min-width: 140px;
+  }
+  
+  .medium-participants .participant-tile {
+    width: 45%;
+    height: 45%;
+  }
+  
+  .screenshare-active .participants-container {
+    width: 25%;
+  }
+}
+
+@media (max-width: 768px) {
+  .participants-container {
+    gap: 4px;
+    padding: 4px;
+    aspect-ratio: 16/9;
+
+  }
+  
+  .few-participants .participant-tile {
+    width: 90%;
+    height: 90%;
+  }
+  .few-participants .participant-tile.current-user {
+    min-width: 120px;
+    right: 10px;
+    bottom: 10px;
+  }
+  .medium-participants .participant-tile,
+  .many-participants .participant-tile {
+    width: 48%;
+    height: 48%;
+    max-width: 49%;
+  }
+  
+  .screenshare-active .participants-container {
+    width: 30%;
+    right: 10px;
+    top: 10px;
+    aspect-ratio: 16/9;
+
+  }
+  
+  .meet-controls-bar {
+    padding: 8px;
+  }
+  
+  .control-button {
+    min-width: 60px;
+    padding: 6px 8px;
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 480px) {
+  .few-participants .participant-tile {
+    width: 95%;
+    height: 95%;
+  }
+  .few-participants .participant-tile.current-user {
+    min-width: 100px;
+    right: 5px;
+    bottom: 5px;
+    border-width: 1px;
+  }
+  
+  .medium-participants .participant-tile,
+  .many-participants .participant-tile {
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+  }
+  
+  .screenshare-active .participants-container {
+    position: relative;
+    width: 100%;
+    right: auto;
+    top: auto;
+    max-width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 8px;
+    aspect-ratio: 16/9;
+
+  }
+  
+  .meet-controls-bar {
+    flex-direction: column;
+    height: auto;
+    padding: 8px;
+  }
+  
+  .meeting-time-display {
+    display: none;
+  }
+  
+  .center-controls {
+    order: 1;
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .right-controls {
+    order: 2;
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .meet-chat-panel {
+    width: 100%;
+    bottom: 120px;
+  }
+}

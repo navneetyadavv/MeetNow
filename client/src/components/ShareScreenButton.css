@@ -1,0 +1,33 @@
+/* ShareScreenButton.css */
+.screen-share-btn {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 50px;
+    background-color: #4a4a4a;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.screen-share-btn:hover {
+    background-color: #5a5a5a;
+    transform: scale(1.05);
+}
+
+.screen-share-btn.active {
+    background-color: #4640f5;
+}
+
+.screen-share-btn.active:hover {
+    background-color: #3e39d9;
+}
+
+.screen-share-btn svg {
+    width: 1.2rem;
+    height: 1.2rem;
+}
