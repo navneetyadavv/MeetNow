@@ -1,5 +1,6 @@
 import React from 'react';
 import './MeetHeader.css';
+import UserProfile from './UserProfile';
 
 const MeetHeader: React.FC = () => {
   return (
@@ -14,9 +15,7 @@ const MeetHeader: React.FC = () => {
         </div>
       </div>
       <div className="header-right">
-        <button className="header-icon-button">
-          <span className="material-icons">account_circle</span>
-        </button>
+        <UserProfile />
       </div>
     </header>
   );

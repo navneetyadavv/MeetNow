@@ -1,13 +1,14 @@
 export const ADD_PEER = "ADD_PEER" as const;
 export const REMOVE_PEER = "REMOVE_PEER" as const;
-export const RESET_PEERS = "RESET_PEERS" as const;  // New action type
+export const RESET_PEERS = "RESET_PEERS" as const;
+export const UPDATE_PEER = "UPDATE_PEER" as const;  // Added this new action type
 
 export type AddPeerAction = {
     type: typeof ADD_PEER;
     payload: {
         peerId: string;
         stream: MediaStream;
-        isSharingScreen?: boolean;  // Optional field for screen sharing
+        isSharingScreen?: boolean;
     };
 };
 
@@ -22,10 +23,20 @@ export type ResetPeersAction = {
     type: typeof RESET_PEERS;
 };
 
-// Union type for all possible actions
-export type PeerAction = AddPeerAction | RemovePeerAction | ResetPeersAction;
+export type UpdatePeerAction = {  // Added this new action type
+    type: typeof UPDATE_PEER;
+    payload: {
+        peerId: string;
+        isSharingScreen: boolean;
+    };
+};
 
-// Action creators
+export type PeerAction = 
+    | AddPeerAction 
+    | RemovePeerAction 
+    | ResetPeersAction
+    | UpdatePeerAction;  // Added to the union type
+
 export const addPeerAction = (
     peerId: string, 
     stream: MediaStream,
@@ -42,4 +53,12 @@ export const removePeerAction = (peerId: string): RemovePeerAction => ({
 
 export const resetPeersAction = (): ResetPeersAction => ({
     type: RESET_PEERS
+});
+
+export const updatePeerAction = (  // Added this new action creator
+    peerId: string,
+    isSharingScreen: boolean
+): UpdatePeerAction => ({
+    type: UPDATE_PEER,
+    payload: { peerId, isSharingScreen }
 });

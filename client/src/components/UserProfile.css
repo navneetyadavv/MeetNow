@@ -1,0 +1,79 @@
+/* UserProfile.css */
+.user-profile {
+    display: flex;
+    align-items: center;
+  }
+  
+  .profile-dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .profile-picture {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #fff;
+  }
+  
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #fff;
+    min-width: 200px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    border-radius: 8px;
+    padding: 12px;
+  }
+  
+  .profile-dropdown:hover .dropdown-content {
+    display: block;
+  }
+  
+  .user-info {
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .user-name {
+    font-weight: bold;
+    margin: 0;
+  }
+  
+  .user-email {
+    font-size: 0.8em;
+    color: #666;
+    margin: 4px 0 0 0;
+  }
+  
+  .sign-out-button {
+    background: none;
+    border: none;
+    color: #4285f4;
+    cursor: pointer;
+    padding: 8px 0;
+    width: 100%;
+    text-align: left;
+    font-size: 0.9em;
+  }
+  
+  .sign-out-button:hover {
+    text-decoration: underline;
+  }
+  
+  .sign-in-button {
+    background-color: #4285f4;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+  }
+  
+  .sign-in-button:hover {
+    background-color: #357ae8;
+  }

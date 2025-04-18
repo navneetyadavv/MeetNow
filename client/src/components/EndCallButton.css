@@ -1,7 +1,7 @@
 .google-meet-end-button {
     width: 56px;
     height: 56px;
-    background-color: #ea4335; /* Google Meet red */
+    background-color: #ea4335; 
     border: none;
     border-radius: 50%;
     display: flex;
@@ -13,12 +13,12 @@
 }
 
 .google-meet-end-button:hover {
-    background-color: #d93025; /* Darker red on hover */
+    background-color: #d93025; 
     transform: scale(1.05);
 }
 
 .phone-icon {
     color: white;
     font-size: 24px;
-    transform: rotate(135deg); /* Same angle as Google Meet icon */
+    transform: rotate(135deg);
 }

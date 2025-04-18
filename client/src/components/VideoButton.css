@@ -1,4 +1,3 @@
-/* Video Button Styles */
 .video-control-container {
     display: flex;
     align-items: center;
@@ -27,7 +26,7 @@
   }
   
   .video-button.disabled {
-    background: #ea4335; /* Red when video is off */
+    background: #ea4335;
   }
   
   .video-button:hover {
@@ -57,7 +56,6 @@
     background: rgba(255, 255, 255, 0.1);
   }
   
-  /* Settings dropdown (optional) */
   .video-settings-dropdown {
     position: absolute;
     bottom: 60px;
@@ -70,7 +68,6 @@
     z-index: 100;
   }
   
-  /* Mobile responsive styles */
   @media (max-width: 768px) {
     .video-control-container {
       margin: 0 4px;

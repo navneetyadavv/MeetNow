@@ -2,8 +2,12 @@ import React from "react";
 import "./MeetHero.css";
 import { CreateButton } from "./CreateButton";
 import { JoinButton } from "./JoinButton";
+import { useAuth } from '../context/AuthContext';
+
 
 const MeetHero: React.FC = () => {
+  const { currentUser } = useAuth();
+  
   return (
     <section className="meet-hero">
       <div className="hero-background"></div>
@@ -20,9 +24,15 @@ const MeetHero: React.FC = () => {
             Google Meet, to make it free and available for all.
           </p>
           <div className="hero-actions">
+        {currentUser ? (
+          <>
             <CreateButton />
-            <JoinButton/>
-          </div>
+            <JoinButton />
+          </>
+        ) : (
+          <p>Please sign in to create or join meetings</p>
+        )}
+      </div>
         </div>
         <div className="hero-image">
           <div className="people-container">

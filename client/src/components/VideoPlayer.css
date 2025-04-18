@@ -1,6 +1,5 @@
-/* Google Meet exact video player styling with proper aspect ratio */
 .video-player {
-  /* Aspect ratio container */
+
   position: relative;
   height: 100%;
   aspect-ratio: 16/9;
@@ -24,7 +23,7 @@
   box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.5);
 }
 
-/* Video element styling */
+
 .video-player video {
   position: absolute;
   top: 0;
@@ -35,12 +34,10 @@
   background-color: #202124;
 }
 
-/* Mirror effect only for local video (not screen share) */
 .video-player:not(.screen-share) video.mirror {
   transform: scaleX(-1);
 }
 
-/* Video placeholder when camera is off */
 .video-placeholder {
   position: absolute;
   top: 0;
@@ -66,7 +63,6 @@
   text-transform: uppercase;
 }
 
-/* User information overlay */
 .user-info {
   position: absolute;
   bottom: 8px;
@@ -106,7 +102,6 @@
   opacity: 0.8;
 }
 
-/* Current user indicator */
 .current-user-indicator {
   position: absolute;
   top: 8px;
@@ -119,7 +114,6 @@
   line-height: 1;
 }
 
-/* Screen share label */
 .screen-share-label {
   position: absolute;
   bottom: 12px;
@@ -132,7 +126,6 @@
   line-height: 1;
 }
 
-/* Animation for video appearance */
 @keyframes fadeIn {
   from { opacity: 0; transform: scale(0.98); }
   to { opacity: 1; transform: scale(1); }
@@ -142,7 +135,6 @@
   animation: fadeIn 0.2s ease-out;
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
   .user-info {
     font-size: 11px;
@@ -167,11 +159,10 @@
   }
 }
 
-/* Fallback for browsers that don't support aspect-ratio */
 @supports not (aspect-ratio: 16/9) {
   .video-player {
     height: 0;
-    padding-bottom: 56.25%; /* 16:9 aspect ratio fallback */
+    padding-bottom: 56.25%;
   }
   
   .video-player video,

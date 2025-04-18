@@ -8,27 +8,35 @@ export type PeerState = Record<
     }
 >;
 
-export const peersReducer = (state: PeerState, action: PeerAction) => {
+// In peersReducer.ts
+export const peersReducer = (
+    state: PeerState,
+    action: PeerAction
+  ): PeerState => {
     switch (action.type) {
-        case ADD_PEER:
-            return {
-                ...state,
-                [action.payload.peerId]: {
-                    stream: action.payload.stream,
-                    isSharingScreen: action.payload.isSharingScreen
-                },
-            };
-
-        case REMOVE_PEER: {
-            const newState = { ...state };
-            delete newState[action.payload.peerId];
-            return newState;
-        }
-
-        case RESET_PEERS:
-            return {};
-
-        default:
-            return state;
+      case "ADD_PEER":
+        return {
+          ...state,
+          [action.payload.peerId]: {
+            stream: action.payload.stream,
+            isSharingScreen: action.payload.isSharingScreen || false,
+          },
+        };
+      case "REMOVE_PEER":
+        const { [action.payload.peerId]: _, ...rest } = state;
+        return rest;
+      case "UPDATE_PEER":
+        return {
+          ...state,
+          [action.payload.peerId]: {
+            ...state[action.payload.peerId],
+            isSharingScreen: action.payload.isSharingScreen,
+          },
+        };
+      case "RESET_PEERS":
+        return {};
+      default:
+        return state;
     }
-};
+  };
+  

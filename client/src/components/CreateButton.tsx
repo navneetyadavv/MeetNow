@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { RoomContext } from "../context/RoomContext";
 
 export const CreateButton: React.FC = () => {
-  const roomContext = useContext(RoomContext); // Safely access RoomContext
+  const roomContext = useContext(RoomContext);
 
   const createRoom = () => {
     if (!roomContext) {

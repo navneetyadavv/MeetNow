@@ -1,4 +1,4 @@
-/* MeetHero.css */
+
 .meet-hero {
   position: relative;
   padding: 80px 24px;
@@ -213,9 +213,6 @@ h1 {
 }
 
 
-
-
-/* Animation */
 @keyframes float {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-10px); }
@@ -226,7 +223,6 @@ h1 {
 .person3 { animation: float 4s ease-in-out infinite 1s; }
 .person4 { animation: float 4s ease-in-out infinite 1.5s; }
 
-/* Responsive styles */
 @media (max-width: 1024px) {
   .hero-container {
     gap: 32px;
