@@ -45,6 +45,7 @@ A real-time video conferencing application built with React, Socket.IO, and Peer
    VITE_WS_SERVER=http://localhost:8000
    
 6. Start the server and client:
+   
    In the server directory
    ```bash
    npm start
