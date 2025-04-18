@@ -31,21 +31,26 @@ A real-time video conferencing application built with React, Socket.IO, and Peer
    # Navigate to the client directory
 
 2. Install dependencies for both client and server:
-   # Navigate to the client directory
+   Navigate to the client directory
    cd client
    npm install
 
-   # Navigate to the server directory
+   Navigate to the server directory
+   ```bash
    cd server
    npm install
 
-3. Set up environment variables:
+4. Set up environment variables:
+   ```bash
    VITE_WS_SERVER=http://localhost:8000
    
-4. Start the server and client:
-   # In the server directory
-     npm start
-   # In the client directory
-     npm start
+6. Start the server and client:
+   In the server directory
+   ```bash
+   npm start
+   ```
+   In the client directory
+   ```bash
+   npm start
 
 
