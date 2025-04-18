@@ -21,13 +21,13 @@ const io = new Server(server, {
 
 io.on("connection", (socket) => {
     console.log("user is connected");
-    roomHandler(socket, io); // Pass io as second argument
+    roomHandler(socket, io);
     
     socket.on('disconnect', () => {
         console.log("user is disconnected");
     })
 });
 
-server.listen(port, () => {
+server.listen(port, '0.0.0.0', () => {
     console.log(`listening to the server on port ${port}`);
 });

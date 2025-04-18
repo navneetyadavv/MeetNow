@@ -1,42 +1,57 @@
 import { Socket, Server } from "socket.io";
 import { v4 as uuidv4 } from "uuid";
 
-// Define the rooms and chat history outside of the roomHandler function
-const rooms: Record<string, string[]> = {};
-const chatHistory: Record<string, IChatMessage[]> = {};
-
 interface IChatMessage {
   roomId: string;
   senderId: string;
+  userId: string;
   message: string;
   timestamp: number;
   name?: string;
-  reaction?: string; // Add this line
+  photoURL?: string;
+  reaction?: string;
 }
+
+interface RoomMember {
+  peerId: string;
+  userId: string; // Required
+  userName?: string; // Optional
+  userAvatar?: string; // Optional
+}
+
 interface IRoomParams {
   roomId: string;
   peerId: string;
+  userId?: string; // Made optional with ?
+  userName?: string;
+  userAvatar?: string;
 }
-export const roomHandler = (socket: Socket, io: Server) => {
-  interface IRoomParams {
-    roomId: string;
-    peerId: string;
-  }
-  const MAX_ROOM_SIZE = 100; // Set your max room size
+// Store these outside the handler so they persist
+const rooms: Record<string, RoomMember[]> = {};
+const chatHistory: Record<string, IChatMessage[]> = {};
+const MAX_ROOM_SIZE = 100;
 
-  // Add chat message handling
+export const roomHandler = (socket: Socket, io: Server) => {
   const sendMessage = ({
     roomId,
     senderId,
+    userId,
+    userName,
+    userAvatar,
     message,
-    name,
-  }: Omit<IChatMessage, "timestamp">) => {
+  }: Omit<IChatMessage, "timestamp"> & {
+    userId: string;
+    userName?: string;
+    userAvatar?: string;
+  }) => {
     const msg: IChatMessage = {
       roomId,
       senderId,
+      userId,
       message,
+      name: userName || senderId.slice(0, 8),
+      photoURL: userAvatar,
       timestamp: Date.now(),
-      name: name || senderId.slice(0, 8),
     };
 
     if (!chatHistory[roomId]) {
@@ -44,7 +59,7 @@ export const roomHandler = (socket: Socket, io: Server) => {
     }
 
     chatHistory[roomId].push(msg);
-    io.to(roomId).emit("receive-message", msg); // Use the passed io instance
+    io.to(roomId).emit("receive-message", msg);
   };
 
   const getMessages = (roomId: string) => {
@@ -52,27 +67,29 @@ export const roomHandler = (socket: Socket, io: Server) => {
   };
 
   const createRoom = () => {
-    console.log("room is created");
     const roomId = uuidv4();
     rooms[roomId] = [];
+    console.log(`Room created: ${roomId}`);
     socket.emit("room-created", { roomId });
-    console.log("user created the room");
   };
 
   const startSharing = ({ peerId, roomId }: IRoomParams) => {
-    socket.to(roomId).emit("user-started-sharing", peerId);
+    console.log(`User ${peerId} started sharing in room ${roomId}`);
+    socket.to(roomId).emit("user-started-sharing", { peerId });
   };
 
-  const stopSharing = (roomId: string) => {
-    socket.to(roomId).emit("user-stopped-sharing");
+  const stopSharing = ({ peerId, roomId }: IRoomParams) => {
+    console.log(`User ${peerId} stopped sharing in room ${roomId}`);
+    socket.to(roomId).emit("user-stopped-sharing", { peerId });
   };
 
   const leaveRoom = ({ peerId, roomId }: IRoomParams) => {
     if (rooms[roomId]) {
-      rooms[roomId] = rooms[roomId].filter((id) => id !== peerId);
+      rooms[roomId] = rooms[roomId].filter(
+        (member) => member.peerId !== peerId
+      );
       socket.to(roomId).emit("user-disconnected", peerId);
 
-      // If room is empty, clean it up
       if (rooms[roomId].length === 0) {
         delete rooms[roomId];
         delete chatHistory[roomId];
@@ -80,52 +97,55 @@ export const roomHandler = (socket: Socket, io: Server) => {
       }
     }
   };
-
-  const joinRoom = ({ roomId, peerId }: IRoomParams) => {
-    console.log("Attempting to join room", roomId, "with peer", peerId);
-
-    // Check if room exists and isn't full
-    if (!rooms[roomId]) {
-      console.log(`Room ${roomId} does not exist`);
-      socket.emit("invalid-room");
+  const joinRoom = ({
+    roomId,
+    peerId,
+    userId,
+    userName,
+    userAvatar,
+  }: IRoomParams) => {
+    if (!userId) {
+      console.error("User ID is required");
       return;
     }
 
+    if (!rooms[roomId]) {
+      // Create room if it doesn't exist (for the first joiner)
+      rooms[roomId] = [];
+    }
+
     if (rooms[roomId].length >= MAX_ROOM_SIZE) {
-      console.log(`Room ${roomId} is full`);
+      console.error(`Room ${roomId} is full`);
       socket.emit("room-full");
       return;
     }
 
-    // Check if the peerId already exists in the room
-    if (!rooms[roomId].includes(peerId)) {
-      console.log("User joined the room", roomId, peerId);
-      rooms[roomId].push(peerId);
-      console.log("room members", rooms[roomId]);
-      socket.join(roomId);
-
-      socket.to(roomId).emit("user-joined", { peerId });
-      // Emit the updated list of participants to all users in the room
-      socket.to(roomId).emit("get-users", {
-        roomId,
-        participants: rooms[roomId],
-      });
-
-      // Optionally, emit to the sender as well
-      socket.emit("get-users", {
-        roomId,
-        participants: rooms[roomId],
-      });
+    // Notify existing users about the new user
+    socket.to(roomId).emit("user-joined", { peerId });
+    // Check if this user is already in the room (by userId, not peerId)
+    const existingUserIndex = rooms[roomId].findIndex(
+      (member) => member.userId === userId
+    );
+    if (existingUserIndex !== -1) {
+      // Update the existing user's peerId and socket connection
+      rooms[roomId][existingUserIndex].peerId = peerId;
+      console.log(`User reconnected: ${userId} with new peerId ${peerId}`);
     } else {
-      console.log("User already in the room", peerId);
+      // Add new user
+      rooms[roomId].push({ peerId, userId, userName, userAvatar });
+      console.log(`New user joined: ${userId} with peerId ${peerId}`);
     }
 
-    socket.on("disconnect", () => {
-      console.log("user left the room: ", peerId);
-      leaveRoom({ peerId, roomId });
+    socket.join(roomId);
+
+    // Notify all clients in the room about the updated user list
+    io.to(roomId).emit("get-users", {
+      roomId,
+      participants: rooms[roomId],
     });
   };
 
+  // Socket event listeners
   socket.on("react-to-message", ({ messageId, reaction, roomId }) => {
     const roomMessages = chatHistory[roomId];
     if (!roomMessages) return;
@@ -134,7 +154,6 @@ export const roomHandler = (socket: Socket, io: Server) => {
       (msg) => msg.timestamp === messageId
     );
     if (messageIndex !== -1) {
-      // Create a new object to ensure state updates
       const updatedMessage = {
         ...roomMessages[messageIndex],
         reaction,
@@ -144,13 +163,25 @@ export const roomHandler = (socket: Socket, io: Server) => {
       io.to(roomId).emit("message-updated", updatedMessage);
     }
   });
-  socket.on("join-room", joinRoom)
+
+  socket.on("join-room", joinRoom);
   socket.on("send-message", sendMessage);
   socket.on("request-messages", ({ roomId }) => {
     socket.emit("receive-messages", { messages: getMessages(roomId) });
   });
   socket.on("create-room", createRoom);
-  socket.on("start-sharing", startSharing);
-  socket.on("stop-sharing", stopSharing);
+  socket.on("start-screen-share", (data) => startSharing(data));
+  socket.on("stop-screen-share", (data) => stopSharing(data));
   socket.on("leave-room", leaveRoom);
+
+  socket.on("disconnect", () => {
+    console.log(`Socket disconnected: ${socket.id}`);
+    // Find and remove this socket from all rooms
+    Object.entries(rooms).forEach(([roomId, members]) => {
+      const member = members.find((m) => m.peerId === socket.id);
+      if (member) {
+        leaveRoom({ peerId: socket.id, roomId });
+      }
+    });
+  });
 };
